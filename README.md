@@ -413,7 +413,7 @@ ErrorUtil.java 错误信息接口
     public final static int BAD_GATEWAY = 502;//无效代理	业务服务器下线了或者正在升级。请稍后重试。
     public final static int UNAVAILABLE = 503;//服务暂时失效	服务器无法响应请求。请稍后重试。
 ```
-##### 打印错误信息示例：
+##### 显示错误信息示例：
 ```java
 PersonalModel.getInstance().getUserInfor(this, new PersonalModel.GetPersonalInforCallback() {
             @Override
