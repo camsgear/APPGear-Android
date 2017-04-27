@@ -32,13 +32,17 @@ VideoModel.java 视频列表、点赞和详情接口
 ### 接口列表
 - [initData](#initdata)
 - [refreshData](#refreshdata)
+- [loadData](#loaddata)
+- [upVote](#upvote)
+- [unVote](#unvote)
+- [obtainVideoModeBean](#obtainvideomodebean)
 
 #### initData
 ##### 描述:
 获取视频列表信息，用于第一次请求视频列表数据。
 ##### 函数定义:
 ```java
-initData(int myVideo, Context context, int limit, int orderBy, final VideoListCallback videoListCallback)
+public void initData(int myVideo, Context context, int limit, int orderBy, final VideoListCallback videoListCallback)
 ```
 ##### 参数说明：
 - `myVideo` - 可取值为`Utils.ALL(获取视频数据)、 Utils.MY_PUBLISH（获取自己发布的数据）、 Utils.MY_COLLECTION（获取自己收藏的数据）`
@@ -66,7 +70,7 @@ initData(int myVideo, Context context, int limit, int orderBy, final VideoListCa
 刷新视频列表信息，用于获取最新的数据，会返回所有比传入的id号更新的数据
 ##### 函数定义:
 ```java
-refreshData(int myVideo, Context context, int orderBy, String id,final VideoListCallback videoListCallback)
+public void refreshData(int myVideo, Context context, int orderBy, String id,final VideoListCallback videoListCallback)
 ```
 ##### 参数说明：
 - `myVideo` - 可取值为`Utils.ALL(获取视频数据)、 Utils.MY_PUBLISH（获取自己发布的数据）、 Utils.MY_COLLECTION（获取自己收藏的数据）`
@@ -89,14 +93,20 @@ refreshData(int myVideo, Context context, int orderBy, String id,final VideoList
                     }
                 });
   ```
-#### `loadData`(int myVideo, Context context, int limit, int orderBy, String id,final VideoListCallback videoListCallback)加载视频列表信息，用于分页加载后面的数据，会返回比传入的id号更旧的数据。参数说明：<br>
+#### loadData
+##### 描述:
+加载视频列表信息，用于分页加载后面的数据，会返回比传入的id号更旧的数据
+##### 函数定义:
+```java
+public void loadData(int myVideo, Context context, int limit, int orderBy, String id,final VideoListCallback videoListCallback)
+```
 ##### 参数说明：
-  `myVideo`：可取值为`Utils.ALL(获取视频数据)、 Utils.MY_PUBLISH（获取自己发布的数据）、 Utils.MY_COLLECTION（获取自己收藏的数据）`<br>
-  `context`：上下文变量<br>
-  `limit`：请求的数据个数<br>
-  `orderBy`：可取值为`Utils.DESC(根据时间倒序排序)、 Utils.ASC（根据时间顺序排序）`<br>
-  `id`：加载的参考值，获取比该id号更旧的数据<br>
-  `videoListCallback`:回调接口，访问服务器成功调用`onSuccess(List<VideoModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+- `myVideo` - 可取值为`Utils.ALL(获取视频数据)、 Utils.MY_PUBLISH（获取自己发布的数据）、 Utils.MY_COLLECTION（获取自己收藏的数据）`
+- `context` - 上下文变量
+- `limit` - 请求的数据个数
+- `orderBy` - 可取值为`Utils.DESC(根据时间倒序排序)、 Utils.ASC（根据时间顺序排序）`
+- `id` - 加载的参考值，获取比该id号更旧的数据
+- `videoListCallback` - 回调接口，访问服务器成功调用`onSuccess(List<VideoModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
 ##### 使用示例：
   ```java
   VideoModel.getInstance().loadData(Utils.ALL, this, limit, Utils.DESC, id, new VideoModel.VideoListCallback() {
@@ -111,39 +121,79 @@ refreshData(int myVideo, Context context, int orderBy, String id,final VideoList
             }
         });
   ```
-  * 视频点赞。参数说明：<br>
-  `context`：上下文变量<br>
-  `sid`：给id号为`sid`的视频点赞<br>
-  `voteCallback`:回调接口，访问服务器成功调用`onSuccess(VoteBean mData);`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+#### upVote
+##### 描述:
+视频点赞
+##### 函数定义:
+```java
+public void upVote(Context context, String sid, final VoteCallback voteCallback)
+```
+##### 参数说明：
+- `context` - 上下文变量
+- `sid` - 给id号为`sid`的视频点赞
+- `voteCallback` - 回调接口，访问服务器成功调用`onSuccess(VoteBean mData);`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+##### 使用示例：
   ```java
-  public void upVote(Context context, String sid,
-                       final VoteCallback voteCallback)
-  ```
-  * 视频取消点赞。参数说明：<br>
-  `context`：上下文变量<br>
-  `sid`：取消id号为`sid`的视频点赞<br>
-  `voteCallback`:回调接口，访问服务器成功调用`onSuccess(VoteBean mData);`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
-  ```java
-  public void unVote(Context context, String sid,
-                       final VoteCallback voteCallback)
-  ```
-  * 获取id号为`videoId`的视频详情。参数说明：<br>
-  `context`：上下文变量<br>
-  `videoId`：获取该id号的数据详情<br>
-  `videoCallback`:回调接口，访问服务器成功调用`onSuccess(VideoModelBean mData);`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
-  ```java
-  public void obtainVideoModeBean(Context context, String videoId,
-                                    final VideoCallback videoCallback)
-  ```
-* VideoCommentModel.java 视频评论列表、点赞接口
+  VideoModel.getInstance().upVote(this, sid, new VideoModel.VoteCallback() {
+            @Override
+            public void onSuccess(VoteBean voteBean) {
+                
+            }
 
-  * 获取某个视频的评论列表信息，用于第一次请求视频评论列表数据。参数说明：<br>
-  `context`：上下文变量<br>
-  `sid`：获取id号为`sid`的视频评论<br>
-  `limit`：请求的数据个数<br>
-  `orderBy`：可取值为`Utils.DESC(根据时间倒序排序)、 Utils.ASC（根据时间顺序排序）`<br>
-  `videoCommentListCallback`:回调接口
-  ```java
-  public void initVideoComment(Context context, String sid, int limit, int orderBy,
-                                 final VideoCommentListCallback videoCommentListCallback)
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
   ```
+#### unVote
+##### 描述:
+取消视频点赞
+##### 函数定义:
+```java
+public void unVote(Context context, String sid, final VoteCallback voteCallback)
+```
+##### 参数说明：
+- `context` - 上下文变量<br>
+- `sid` - 取消id号为`sid`的视频点赞<br>
+- `voteCallback` - 回调接口，访问服务器成功调用`onSuccess(VoteBean mData);`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+##### 使用示例：
+  ```java
+  VideoModel.getInstance().unVote(this, sid, new VideoModel.VoteCallback() {
+            @Override
+            public void onSuccess(VoteBean voteBean) {
+
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+  ```
+#### obtainVideoModeBean
+##### 描述:
+获取id号为`videoId`的视频详情
+##### 函数定义:
+```java
+public void obtainVideoModeBean(Context context, String videoId, final VideoCallback videoCallback)
+```
+##### 参数说明：
+- `context` - 上下文变量
+- `videoId` - 获取该id号的数据详情
+- `videoCallback` - 回调接口，访问服务器成功调用`onSuccess(VideoModelBean mData);`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+##### 使用示例：
+  ```java
+  VideoModel.getInstance().obtainVideoModeBean(this, sid, new VideoModel.VideoCallback() {
+            @Override
+            public void onSuccess(VideoModelBean videoModelBean) {
+                
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+  ```
+
