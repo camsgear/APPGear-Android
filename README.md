@@ -39,13 +39,13 @@ VideoModel.java 视频列表、点赞和详情接口
 initData(int myVideo, Context context, int limit, int orderBy, final VideoListCallback videoListCallback)
 ```
 ##### 描述:
-获取视频列表信息，用于第一次请求视频列表数据。<br>
+获取视频列表信息，用于第一次请求视频列表数据。
 ##### 参数说明：
-  `myVideo`：可取值为`Utils.ALL(获取视频数据)、 Utils.MY_PUBLISH（获取自己发布的数据）、 Utils.MY_COLLECTION（获取自己收藏的数据）`<br>
-  `context`：上下文变量<br>
-  `limit`：请求的数据个数<br>
-  `orderBy`：可取值为`Utils.DESC(根据时间倒序排序)、 Utils.ASC（根据时间顺序排序）`<br>
-  `videoListCallback`:回调接口，访问服务器成功调用`onSuccess(List<VideoModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+- `myVideo` - 可取值为`Utils.ALL(获取视频数据)、 Utils.MY_PUBLISH（获取自己发布的数据）、 Utils.MY_COLLECTION（获取自己收藏的数据）`
+- `context` - 上下文变量
+- `limit` - 请求的数据个数
+- `orderBy` - 可取值为`Utils.DESC(根据时间倒序排序)、 Utils.ASC（根据时间顺序排序）`
+- `videoListCallback` - 回调接口，访问服务器成功调用`onSuccess(List<VideoModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
 ##### 使用示例：
   ```java
   VideoModel.getInstance().initData(Utils.ALL, this, 10, Utils.DESC,
