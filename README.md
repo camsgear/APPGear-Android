@@ -21,10 +21,23 @@ dependencies {
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
-## 接口说明
-### VideoModel.java 视频列表、点赞和详情接口
+## 功能分类
+- [视频](#videos)
+- [直播](#live)
+- [用户](#user)
 
-#### `initData`(int myVideo, Context context, int limit, int orderBy, final VideoListCallback videoListCallback)获取视频列表信息，用于第一次请求视频列表数据。<br>
+
+## Videos
+VideoModel.java 视频列表、点赞和详情接口
+### 接口列表
+- [initData](#initdata)
+
+
+#### initData
+```java
+initData(int myVideo, Context context, int limit, int orderBy, final VideoListCallback videoListCallback)
+```
+获取视频列表信息，用于第一次请求视频列表数据。<br>
 ##### 参数说明：
   `myVideo`：可取值为`Utils.ALL(获取视频数据)、 Utils.MY_PUBLISH（获取自己发布的数据）、 Utils.MY_COLLECTION（获取自己收藏的数据）`<br>
   `context`：上下文变量<br>
