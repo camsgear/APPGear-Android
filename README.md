@@ -252,3 +252,61 @@ public void viewsCount(Context context, String liveId, final ViewsCountCallback 
             }
         });
   ```
+## User
+LoginAndRegisterModel.java 登录、获取验证码接口
+### 接口列表
+- [getVerificationCode](#getverificationcode)
+- [loginOrRegister](#loginorregister)
+
+#### getVerificationCode
+##### 描述:
+获取手机验证码。
+##### 函数定义:
+```java
+ public void getVerificationCode(Context context, String phone, final LoginAndRegisterCallback loginAndRegisterCallback)
+```
+##### 参数说明：
+- `context` - 上下文变量
+- `phone` - 手机号码
+- `loginAndRegisterCallback` - 回调接口，访问服务器成功调用`onSuccess()`，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+##### 使用示例：
+  ```java
+  LoginAndRegisterModel.getInstance().getVerificationCode(this, phone, new LoginAndRegisterModel.LoginAndRegisterCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+  ```
+#### loginOrRegister
+##### 描述:
+使用手机号登录。
+##### 函数定义:
+```java
+ public void loginOrRegister(final Context context, String name, String phone, String verifyingCodes, final LoginCallback loginCallback)
+```
+##### 参数说明：
+- `context` - 上下文变量
+- `name` - 昵称（可以为""）
+- `phone` - 手机号码
+- `verifyingCodes` - 验证码
+- `loginCallback` - 回调接口，访问服务器成功调用`onSuccess(UserBean userBean)`,userBean是用户信息，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+##### 使用示例：
+  ```java
+  LoginAndRegisterModel.getInstance().loginOrRegister(this, name, phone, verifyingCodes, new LoginAndRegisterModel.LoginCallback() {
+            @Override
+            public void onSuccess(UserBean userBean) {
+                
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+  ```
