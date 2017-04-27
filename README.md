@@ -196,4 +196,7 @@ public void obtainVideoModeBean(Context context, String videoId, final VideoCall
             }
         });
   ```
-
+## Live
+LiveModel.java 直播列表接口
+### 接口列表
+- [initData](#initdata)
