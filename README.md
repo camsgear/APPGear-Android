@@ -341,6 +341,8 @@ PersonalModel.java 当前登录用户信息接口
 UserManager.java 获取登录状态、创建匿名用户接口
 ### 接口列表
 - [isLogin](#islogin)
+- [createAnonymous](#createanonymous)
+- [signOut](#signout)
 
 #### isLogin
 ##### 描述:
@@ -352,7 +354,7 @@ UserManager.java 获取登录状态、创建匿名用户接口
 ##### 参数说明：
 - `context` - 上下文变量
 ##### 返回值说明：
-- null为没有登录，UserManager.ROLE_ANON为匿名登录，UserManager.ROLE_USER为注册用户登录。
+- `null`为没有登录，`UserManager.ROLE_ANON`为匿名登录，`UserManager.ROLE_USER`为注册用户登录。
 ##### 使用示例：
   ```java
   String role = UserManager.getInstance().isLogin(this.getActivity());
@@ -363,4 +365,33 @@ UserManager.java 获取登录状态、创建匿名用户接口
   }else if(role.equals(UserManager.ROLE_USER)){
 
   }
+  ```
+#### createAnonymous
+##### 描述:
+创建匿名用户。当前没有登录时应该创建匿名用户。
+##### 函数定义:
+```java
+ public void createAnonymous(final Context context)
+```
+##### 参数说明：
+- `context` - 上下文变量
+##### 使用示例：
+  ```java
+  String role = UserManager.getInstance().isLogin(this.getActivity());
+  if(role == null || role.equals("")){
+        UserManager.getInstance().createAnonymous(this);
+  }
+  ```
+#### signOut
+##### 描述:
+退出登录。执行该函数会清除登录信息并创建一个匿名用户。
+##### 函数定义:
+```java
+ public void signOut(Context context)
+```
+##### 参数说明：
+- `context` - 上下文变量
+##### 使用示例：
+  ```java
+  UserManager.getInstance().signOut(this);
   ```
