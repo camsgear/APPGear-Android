@@ -197,6 +197,32 @@ public void obtainVideoModeBean(Context context, String videoId, final VideoCall
         });
   ```
 ## Live
-LiveModel.java 直播列表接口
+LiveDetailModel.java 直播详情、观看人数接口
 ### 接口列表
-- [initData](#initdata)
+- [getLiveDetail](#getlivedetail)
+
+#### getLiveDetail
+##### 描述:
+获取id号为`liveId`的直播详情。
+##### 函数定义:
+```java
+public void getLiveDetail(Context context, String liveId, final GetLiveDetailCallback getLiveDetailCallback)
+```
+##### 参数说明：
+- `context` - 上下文变量
+- `liveId` - 获取该id号的数据详情
+- `getLiveDetailCallback` - 回调接口，访问服务器成功调用`onSuccess(LiveDetailBean liveDetailBean)`,liveDetailBean是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+##### 使用示例：
+  ```java
+  LiveDetailModel.getInstance().getLiveDetail(this, sid, new LiveDetailModel.GetLiveDetailCallback() {
+            @Override
+            public void onSuccess(LiveDetailBean liveDetailBean) {
+
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+  ```
