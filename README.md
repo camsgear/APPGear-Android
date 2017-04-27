@@ -184,7 +184,7 @@ public void obtainVideoModeBean(Context context, String videoId, final VideoCall
 - `videoCallback` - 回调接口，访问服务器成功调用`onSuccess(VideoModelBean mData);`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
 ##### 使用示例：
   ```java
-  VideoModel.getInstance().obtainVideoModeBean(this, sid, new VideoModel.VideoCallback() {
+  VideoModel.getInstance().obtainVideoModeBean(this, videoId, new VideoModel.VideoCallback() {
             @Override
             public void onSuccess(VideoModelBean videoModelBean) {
                 
@@ -200,6 +200,7 @@ public void obtainVideoModeBean(Context context, String videoId, final VideoCall
 LiveDetailModel.java 直播详情、观看人数接口
 ### 接口列表
 - [getLiveDetail](#getlivedetail)
+- [viewsCount](#viewscount)
 
 #### getLiveDetail
 ##### 描述:
@@ -214,10 +215,35 @@ public void getLiveDetail(Context context, String liveId, final GetLiveDetailCal
 - `getLiveDetailCallback` - 回调接口，访问服务器成功调用`onSuccess(LiveDetailBean liveDetailBean)`,liveDetailBean是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
 ##### 使用示例：
   ```java
-  LiveDetailModel.getInstance().getLiveDetail(this, sid, new LiveDetailModel.GetLiveDetailCallback() {
+  LiveDetailModel.getInstance().getLiveDetail(this, liveId, new LiveDetailModel.GetLiveDetailCallback() {
             @Override
             public void onSuccess(LiveDetailBean liveDetailBean) {
 
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+  ```
+#### viewsCount
+##### 描述:
+获取id号为`liveId`的直播观看人数。
+##### 函数定义:
+```java
+public void viewsCount(Context context, String liveId, final ViewsCountCallback viewsCountCallback)
+```
+##### 参数说明：
+- `context` - 上下文变量
+- `liveId` - 获取该id号的直播观看人数
+- `viewsCountCallback` - 回调接口，访问服务器成功调用`onSuccess(int i)`,i是观看人数，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+##### 使用示例：
+  ```java
+  LiveDetailModel.getInstance().viewsCount(this, sid, new LiveDetailModel.ViewsCountCallback() {
+            @Override
+            public void onSuccess(int i) {
+                
             }
 
             @Override
