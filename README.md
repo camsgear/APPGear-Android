@@ -310,3 +310,57 @@ LoginAndRegisterModel.java 登录、获取验证码接口
             }
         });
   ```
+PersonalModel.java 当前登录用户信息接口
+### 接口列表
+- [getUserInfor](#getuserinfor)
+
+#### getUserInfor
+##### 描述:
+获取当前登录用户的详细信息。
+##### 函数定义:
+```java
+ public void getUserInfor(Context context, final GetPersonalInforCallback getPersonalInforCallback)
+```
+##### 参数说明：
+- `context` - 上下文变量
+- `getPersonalInforCallback` - 回调接口，访问服务器成功调用`onSuccess(UserInforBean userInforBean)`，userInforBean是用户的详细信息，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+##### 使用示例：
+  ```java
+  PersonalModel.getInstance().getUserInfor(this, new PersonalModel.GetPersonalInforCallback() {
+            @Override
+            public void onSuccess(UserInforBean userInforBean) {
+                
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+  ```
+UserManager.java 获取登录状态、创建匿名用户接口
+### 接口列表
+- [isLogin](#islogin)
+
+#### isLogin
+##### 描述:
+获取当前登录状态。
+##### 函数定义:
+```java
+ public String isLogin(Context context)
+```
+##### 参数说明：
+- `context` - 上下文变量
+##### 返回值说明：
+- null为没有登录，UserManager.ROLE_ANON为匿名登录，UserManager.ROLE_USER为注册用户登录。
+##### 使用示例：
+  ```java
+  String role = UserManager.getInstance().isLogin(this.getActivity());
+  if(role == null || role.equals("")){
+        UserManager.getInstance().createAnonymous(this);
+  }else if(role.equals(UserManager.ROLE_ANON)){
+            
+  }else if(role.equals(UserManager.ROLE_USER)){
+
+  }
+  ```
