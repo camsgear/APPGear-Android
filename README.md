@@ -449,7 +449,7 @@ UserManager.java 获取登录状态、创建匿名用户接口
   ```
 ## UploadVideo
 UploadToServerModel.java 发布、更新视频接口
-### 发布流程
+### 发布流程（示例代码中有执行流程）
 - 1.获取临时凭证
 - 2.判断视频是否已经发布过
 - 3.上传视频、封面
@@ -473,7 +473,23 @@ UploadToServerModel.java 发布、更新视频接口
 ##### 参数说明：
 - `context` - 上下文变量
 - `getOssSTSCallback` - 回调接口
+##### 使用示例：
+  ```java
+  UploadToServerModel.getInstance().getOssSTS(this, new UploadToServerModel.GetOssSTSCallback() {
+            @Override
+            public void onSuccess(OssSTSBean ossSTSBean) {
+                mOssSTSBean = ossSTSBean;
+                String id = "";//视频的ID
+                isBelongToMe(id);
+            }
 
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+  ```
+  
 #### isBelongToMe
 ##### 描述:
 判断视频是否上传过。
@@ -485,7 +501,30 @@ UploadToServerModel.java 发布、更新视频接口
 - `context` - 上下文变量
 - `originId` - 视频的ID
 - `isBelongToMeCallback` - 回调接口
+##### 使用示例：
+  ```java
+private void isBelongToMe(String id){
+        //获取视频是否存在
+        UploadToServerModel.getInstance().isBelongToMe(this, id, new UploadToServerModel.IsBelongToMeCallback() {
+            @Override
+            public void onSuccess(boolean b) {
+                if(b){
+                    //视频已经存在，执行更新操作
 
+                }else {
+                    //视频不存在，执行创建操作
+                    uploadVideo();//上传视频
+                }
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+    }
+  ```
+  
 #### uploadVideo
 ##### 描述:
 上传视频。
@@ -499,7 +538,29 @@ UploadToServerModel.java 发布、更新视频接口
 - `mVideoName` - 视频的名字
 - `mVideoPath` - 视频的绝对路径
 - `uploadTaskCallback` - 回调接口
+##### 使用示例：
+  ```java
+  void uploadVideo(){
+        UploadToServerModel.getInstance().uploadVideo(this, mOssSTSBean, "", "", new UploadToServerModel.UploadTaskCallback() {
+            @Override
+            public void onProgress(PutObjectRequest putObjectRequest, long l, long l1) {
+                Log.i(TAG,l+" "+l1);
+            }
 
+            @Override
+            public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
+                UploadVideoBean body = null;
+                createVideo(body);
+            }
+
+            @Override
+            public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
+
+            }
+        });
+    }
+  ```
+  
 #### uploadCover
 ##### 描述:
 上传封面。
@@ -525,7 +586,23 @@ public void uploadCover(Context context, final OssSTSBean bean, String mVideoThu
 - `context` - 上下文变量
 - `body` - 视频的信息
 - `uploadVideoCallback` - 回调接口
+##### 使用示例：
+  ```java
+void createVideo(UploadVideoBean body){
+        UploadToServerModel.getInstance().createVideos(this, body, new UploadToServerModel.UploadVideoCallback() {
+            @Override
+            public void onSuccess(VideoModelBean videoModelBean) {
 
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+    }
+  ```
+  
 #### updateVideos
 ##### 描述:
 更新视频。
