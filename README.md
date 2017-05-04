@@ -25,6 +25,7 @@ dependencies {
 - [视频](#videos)
 - [直播](#live)
 - [用户](#user)
+- [发布视频](#uploadvideo)
 - [错误信息](#error)
 
 ## Videos
@@ -446,6 +447,42 @@ UserManager.java 获取登录状态、创建匿名用户接口
         });
     }  
   ```
+## UploadVideo
+UploadToServerModel.java 上传、更新视频接口
+### 接口列表
+- [getOssSTS](#getosssts)
+- [isBelongToMe](#isbelongtome)
+- [uploadVideo](#uploadvideo)
+- [createVideos](#createvideos)
+
+#### getOssSTS
+##### 描述:
+获取获取临时凭证。
+##### 函数定义:
+```java
+ public void getOssSTS(Context context, final GetOssSTSCallback getOssSTSCallback)
+```
+#### isBelongToMe
+##### 描述:
+判断视频是否上传过。
+##### 函数定义:
+```java
+ public void isBelongToMe(Context context, String originId, final IsBelongToMeCallback isBelongToMeCallback)
+```
+#### uploadVideo
+##### 描述:
+上传视频。
+##### 函数定义:
+```java
+  public void uploadVideo(Context context,final OssSTSBean bean,String mVideoName, String mVideoPath,final UploadTaskCallback uploadTaskCallback)
+```
+#### createVideos
+##### 描述:
+创建视频。
+##### 函数定义:
+```java
+ public void createVideos(Context context, UploadVideoBean body, final UploadVideoCallback uploadVideoCallback)
+```
 
 ## Error
 ErrorUtil.java 错误信息接口
