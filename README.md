@@ -452,14 +452,16 @@ UploadToServerModel.java 发布、更新视频接口
 ### 发布流程
 - 1.获取临时凭证
 - 2.判断视频是否已经发布过
-- 3.上传视频
-- 4.在服务器上创建视频
+- 3.上传视频、封面
+- 4.在服务器上创建或更新视频
 
 ### 接口列表
 - [getOssSTS](#getosssts)
 - [isBelongToMe](#isbelongtome)
 - [uploadVideo](#uploadvideo)
+- [uploadCover](#uploadcover)
 - [createVideos](#createvideos)
+- [updateVideos](#updatevideos)
 
 #### getOssSTS
 ##### 描述:
@@ -498,6 +500,20 @@ UploadToServerModel.java 发布、更新视频接口
 - `mVideoPath` - 视频的绝对路径
 - `uploadTaskCallback` - 回调接口
 
+#### uploadCover
+##### 描述:
+上传封面。
+##### 函数定义:
+```java
+public void uploadCover(Context context, final OssSTSBean bean, String mVideoThumbnailName, String mVideoThumbnailPath, final UploadTaskCallback uploadTaskCallback)
+```
+##### 参数说明：
+- `context` - 上下文变量
+- `bean` - 临时凭证（使用getOssSTS获取）
+- `mVideoThumbnailName` - 封面的名字
+- `mVideoThumbnailPath` - 封面的绝对路径
+- `uploadTaskCallback` - 回调接口
+
 #### createVideos
 ##### 描述:
 创建视频。
@@ -507,6 +523,19 @@ UploadToServerModel.java 发布、更新视频接口
 ```
 ##### 参数说明：
 - `context` - 上下文变量
+- `body` - 视频的信息
+- `uploadVideoCallback` - 回调接口
+
+#### updateVideos
+##### 描述:
+更新视频。
+##### 函数定义:
+```java
+ public void updateVideos(Context context, String originId, UploadVideoBean body, final UploadVideoCallback uploadVideoCallback)
+```
+##### 参数说明：
+- `context` - 上下文变量
+- `originId` - 视频的ID
 - `body` - 视频的信息
 - `uploadVideoCallback` - 回调接口
 
