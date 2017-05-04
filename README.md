@@ -403,7 +403,7 @@ UserManager.java 获取登录状态、创建匿名用户接口
   //调用微信授权借口
   mShareAPI = UMShareAPI.get(this);
   mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, umAuthListener);
-  …………
+
   //返回授权信息
   private UMAuthListener umAuthListener = new UMAuthListener() {
         @Override
