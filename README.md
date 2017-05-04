@@ -397,6 +397,56 @@ UserManager.java 获取登录状态、创建匿名用户接口
   ```
 ### 第三方登录（微信、QQ、新浪微博等）
 #### 第三方授权使用友盟SDK，具体集成步骤请参考友盟社会化分享文档：<http://dev.umeng.com/social/android/quick-integration>
+#### 第三方授权后，使用返回的授权信息登录
+##### 使用示例（以微信登录为例）：
+  ```java
+  //调用微信授权借口
+  mShareAPI = UMShareAPI.get(this);
+  mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, umAuthListener);
+  …………
+  //返回授权信息
+  private UMAuthListener umAuthListener = new UMAuthListener() {
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            LogUtil.i(TAG,"平台："+platform);
+
+            if(platform == SHARE_MEDIA.WEIXIN){
+                WechatLoginBean bean = new WechatLoginBean(data.get("unionid"),
+                        data.get("gender"), data.get("screen_name"),data.get("openid"),
+                        data.get("language"),data.get("profile_image_url"),
+                        data.get("country"),data.get("city"),data.get("province"));
+                //微信授权后登录
+                wechatLogin(bean);
+            }
+            showToast(getString(R.string.authorize_succeed));
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            showToast(getString(R.string.authorize_fail));
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            showToast(getString(R.string.authorize_cancel));
+        }
+    };
+    
+  private void wechatLogin(WechatLoginBean mWechatLoginBean){
+        LoginAndRegisterModel.getInstance().wechatLogin(this, mWechatLoginBean, new LoginAndRegisterModel.LoginCallback() {
+            @Override
+            public void onSuccess(UserBean userBean) {
+
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+    }  
+    
+  ```
 
 ## Error
 ErrorUtil.java 错误信息接口
