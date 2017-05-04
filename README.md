@@ -448,7 +448,13 @@ UserManager.java 获取登录状态、创建匿名用户接口
     }  
   ```
 ## UploadVideo
-UploadToServerModel.java 上传、更新视频接口
+UploadToServerModel.java 发布、更新视频接口
+### 发布流程
+- 1.获取临时凭证
+- 2.判断视频是否已经发布过
+- 3.上传视频
+- 4.在服务器上创建视频
+
 ### 接口列表
 - [getOssSTS](#getosssts)
 - [isBelongToMe](#isbelongtome)
@@ -462,6 +468,10 @@ UploadToServerModel.java 上传、更新视频接口
 ```java
  public void getOssSTS(Context context, final GetOssSTSCallback getOssSTSCallback)
 ```
+##### 参数说明：
+- `context` - 上下文变量
+- `getOssSTSCallback` - 回调接口
+
 #### isBelongToMe
 ##### 描述:
 判断视频是否上传过。
@@ -469,6 +479,11 @@ UploadToServerModel.java 上传、更新视频接口
 ```java
  public void isBelongToMe(Context context, String originId, final IsBelongToMeCallback isBelongToMeCallback)
 ```
+##### 参数说明：
+- `context` - 上下文变量
+- `originId` - 视频的ID
+- `isBelongToMeCallback` - 回调接口
+
 #### uploadVideo
 ##### 描述:
 上传视频。
@@ -476,6 +491,13 @@ UploadToServerModel.java 上传、更新视频接口
 ```java
   public void uploadVideo(Context context,final OssSTSBean bean,String mVideoName, String mVideoPath,final UploadTaskCallback uploadTaskCallback)
 ```
+##### 参数说明：
+- `context` - 上下文变量
+- `bean` - 临时凭证（使用getOssSTS获取）
+- `mVideoName` - 视频的名字
+- `mVideoPath` - 视频的绝对路径
+- `uploadTaskCallback` - 回调接口
+
 #### createVideos
 ##### 描述:
 创建视频。
@@ -483,6 +505,10 @@ UploadToServerModel.java 上传、更新视频接口
 ```java
  public void createVideos(Context context, UploadVideoBean body, final UploadVideoCallback uploadVideoCallback)
 ```
+##### 参数说明：
+- `context` - 上下文变量
+- `body` - 视频的信息
+- `uploadVideoCallback` - 回调接口
 
 ## Error
 ErrorUtil.java 错误信息接口
