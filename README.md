@@ -400,8 +400,8 @@ UserManager.java 获取登录状态、创建匿名用户接口
 #### 第三方授权后，使用返回的授权信息登录
 ##### 使用示例（以微信登录为例）：
   ```java
-  //调用微信授权借口
-  mShareAPI = UMShareAPI.get(this);
+  //调用微信授权借口
+  mShareAPI = UMShareAPI.get(this);
   mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, umAuthListener);
 
   //返回授权信息
@@ -445,8 +445,7 @@ UserManager.java 获取登录状态、创建匿名用户接口
             }
         });
     }  
-    
-  ```
+  ```
 
 ## Error
 ErrorUtil.java 错误信息接口
