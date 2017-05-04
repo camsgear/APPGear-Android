@@ -395,6 +395,9 @@ UserManager.java 获取登录状态、创建匿名用户接口
   ```java
   UserManager.getInstance().signOut(this);
   ```
+### 第三方登录（微信、QQ、新浪微博等）
+#### 第三方授权使用友盟SDK，具体集成步骤请参考友盟社会化分享文档：<http://dev.umeng.com/social/android/quick-integration>
+
 ## Error
 ErrorUtil.java 错误信息接口
 ##### 常量说明：
