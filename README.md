@@ -32,11 +32,11 @@ dependencies {
 ## Image
 ImageModel.java 图片列表接口
 ### 接口列表
-- [initData](#initdata)
-- [refreshData](#refreshdata)
-- [loadData](#loaddata)
+- [initData](#initimagedata)
+- [refreshData](#refreshimagedata)
+- [loadData](#loadimagedata)
 
-#### initData
+#### initImageData
 ##### 描述:
 获取图片列表信息，用于第一次请求图片列表数据。
 ##### 函数定义:
@@ -62,7 +62,7 @@ public void initData(Context context, int limit, int orderBy, final ImageListCal
             }
         });
   ```
-#### refreshData 
+#### refreshImageData 
 ##### 描述:
 刷新图片列表信息，用于获取最新的数据，会返回所有比传入的id号更新的数据
 ##### 函数定义:
@@ -88,7 +88,7 @@ public void refreshData(Context context, int orderBy, String id, final ImageMode
             }
         });
   ```
-#### loadData
+#### loadImageData
 ##### 描述:
 加载图片列表信息，用于分页加载后面的数据，会返回比传入的id号更旧的数据
 ##### 函数定义:
