@@ -46,14 +46,14 @@ VideoModel.java 视频列表、点赞和详情接口
 public void initData(int myVideo, Context context, int limit, int orderBy, final VideoListCallback videoListCallback)
 ```
 ##### 参数说明：
-- `myVideo` - 可取值为`Utils.ALL(获取视频数据)、 Utils.MY_PUBLISH（获取自己发布的数据）、 Utils.MY_COLLECTION（获取自己收藏的数据）`
+- `myVideo` - 可取值为`MyVideoUtil.ALL(获取视频数据)、 MyVideoUtil.MY_PUBLISH（获取自己发布的数据）、 MyVideoUtil.MY_COLLECTION（获取自己收藏的数据）`
 - `context` - 上下文变量
 - `limit` - 请求的数据个数
-- `orderBy` - 可取值为`Utils.DESC(根据时间倒序排序)、 Utils.ASC（根据时间顺序排序）`
+- `orderBy` - 可取值为`MyVideoUtil.DESC(根据时间倒序排序)、 MyVideoUtil.ASC（根据时间顺序排序）`
 - `videoListCallback` - 回调接口，访问服务器成功调用`onSuccess(List<VideoModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
 ##### 使用示例：
   ```java
-  VideoModel.getInstance().initData(Utils.ALL, this, 10, Utils.DESC,
+  VideoModel.getInstance().initData(MyVideoUtil.ALL, this, 10, MyVideoUtil.DESC,
                 new VideoModel.VideoListCallback() {
                     @Override
                     public void onSuccess(List<VideoModelBean> list) {
@@ -74,14 +74,14 @@ public void initData(int myVideo, Context context, int limit, int orderBy, final
 public void refreshData(int myVideo, Context context, int orderBy, String id,final VideoListCallback videoListCallback)
 ```
 ##### 参数说明：
-- `myVideo` - 可取值为`Utils.ALL(获取视频数据)、 Utils.MY_PUBLISH（获取自己发布的数据）、 Utils.MY_COLLECTION（获取自己收藏的数据）`
+- `myVideo` - 可取值为`MyVideoUtil.ALL(获取视频数据)、 MyVideoUtil.MY_PUBLISH（获取自己发布的数据）、 MyVideoUtil.MY_COLLECTION（获取自己收藏的数据）`
 - `context` - 上下文变量
-- `orderBy` - 可取值为`Utils.DESC(根据时间倒序排序)、 Utils.ASC（根据时间顺序排序）`
+- `orderBy` - 可取值为`MyVideoUtil.DESC(根据时间倒序排序)、 MyVideoUtil.ASC（根据时间顺序排序）`
 - `id` - 刷新的参考值，获取所有比该id号更新的数据
 - `videoListCallback` - 回调接口，访问服务器成功调用`onSuccess(List<VideoModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
 ##### 使用示例：
   ```java
-  VideoModel.getInstance().refreshData(Utils.ALL, this, Utils.DESC,id,
+  VideoModel.getInstance().refreshData(MyVideoUtil.ALL, this, MyVideoUtil.DESC,id,
                 new VideoModel.VideoListCallback() {
                     @Override
                     public void onSuccess(List<VideoModelBean> list) {
@@ -102,15 +102,15 @@ public void refreshData(int myVideo, Context context, int orderBy, String id,fin
 public void loadData(int myVideo, Context context, int limit, int orderBy, String id,final VideoListCallback videoListCallback)
 ```
 ##### 参数说明：
-- `myVideo` - 可取值为`Utils.ALL(获取视频数据)、 Utils.MY_PUBLISH（获取自己发布的数据）、 Utils.MY_COLLECTION（获取自己收藏的数据）`
+- `myVideo` - 可取值为`MyVideoUtil.ALL(获取视频数据)、 MyVideoUtil.MY_PUBLISH（获取自己发布的数据）、 MyVideoUtil.MY_COLLECTION（获取自己收藏的数据）`
 - `context` - 上下文变量
 - `limit` - 请求的数据个数
-- `orderBy` - 可取值为`Utils.DESC(根据时间倒序排序)、 Utils.ASC（根据时间顺序排序）`
+- `orderBy` - 可取值为`MyVideoUtil.DESC(根据时间倒序排序)、 MyVideoUtil.ASC（根据时间顺序排序）`
 - `id` - 加载的参考值，获取比该id号更旧的数据
 - `videoListCallback` - 回调接口，访问服务器成功调用`onSuccess(List<VideoModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
 ##### 使用示例：
   ```java
-  VideoModel.getInstance().loadData(Utils.ALL, this, limit, Utils.DESC, id, new VideoModel.VideoListCallback() {
+  VideoModel.getInstance().loadData(MyVideoUtil.ALL, this, limit, MyVideoUtil.DESC, id, new VideoModel.VideoListCallback() {
             @Override
             public void onSuccess(List<VideoModelBean> list) {
 
