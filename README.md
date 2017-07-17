@@ -22,11 +22,100 @@ dependencies {
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 ## 功能分类
+- [图片](#image)
 - [视频](#videos)
 - [直播](#live)
 - [用户](#user)
 - [发布视频](#uploadvideo)
 - [错误信息](#error)
+
+## Image
+ImageModel.java 图片列表接口
+### 接口列表
+- [initData](#initdata)
+- [refreshData](#refreshdata)
+- [loadData](#loaddata)
+
+#### initData
+##### 描述:
+获取图片列表信息，用于第一次请求图片列表数据。
+##### 函数定义:
+```java
+public void initData(Context context, int limit, int orderBy, final ImageListCallback mImageListCallback)
+```
+##### 参数说明：
+- `context` - 上下文变量
+- `limit` - 请求的数据个数
+- `orderBy` - 可取值为`MyVideoUtil.DESC(根据时间倒序排序)、 MyVideoUtil.ASC（根据时间顺序排序）`
+- `mImageListCallback` - 回调接口，访问服务器成功调用`onSuccess(List<ImageModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+##### 使用示例：
+  ```java
+  ImageModel.getInstance().initData(this, limit, MyVideoUtil.DESC, new ImageModel.ImageListCallback() {
+            @Override
+            public void onSuccess(List<ImageModelBean> list) {
+
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+  ```
+#### refreshData 
+##### 描述:
+刷新图片列表信息，用于获取最新的数据，会返回所有比传入的id号更新的数据
+##### 函数定义:
+```java
+public void refreshData(Context context, int orderBy, String id, final ImageModel.ImageListCallback mImageListCallback)
+```
+##### 参数说明：
+- `context` - 上下文变量
+- `orderBy` - 可取值为`MyVideoUtil.DESC(根据时间倒序排序)、 MyVideoUtil.ASC（根据时间顺序排序）`
+- `id` - 刷新的参考值，获取所有比该id号更新的数据
+- `mImageListCallback` - 回调接口，访问服务器成功调用`onSuccess(List<ImageModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+##### 使用示例：
+  ```java
+  ImageModel.getInstance().refreshData(this, MyVideoUtil.ALL, "id", new ImageModel.ImageListCallback() {
+            @Override
+            public void onSuccess(List<ImageModelBean> list) {
+
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+  ```
+#### loadData
+##### 描述:
+加载图片列表信息，用于分页加载后面的数据，会返回比传入的id号更旧的数据
+##### 函数定义:
+```java
+public void loadData(Context context, int limit, int orderBy, String id, final ImageListCallback mImageListCallback)
+```
+##### 参数说明：
+- `myVideo` - 可取值为`MyVideoUtil.ALL(获取视频数据)、 MyVideoUtil.MY_PUBLISH（获取自己发布的数据）、 MyVideoUtil.MY_COLLECTION（获取自己收藏的数据）`
+- `context` - 上下文变量
+- `limit` - 请求的数据个数
+- `orderBy` - 可取值为`MyVideoUtil.DESC(根据时间倒序排序)、 MyVideoUtil.ASC（根据时间顺序排序）`
+- `id` - 加载的参考值，获取比该id号更旧的数据
+- `videoListCallback` - 回调接口，访问服务器成功调用`onSuccess(List<ImageModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+##### 使用示例：
+  ```java
+  ImageModel.getInstance().loadData(this,limit, MyVideoUtil.ALL, "id", new ImageModel.ImageListCallback() {
+            @Override
+            public void onSuccess(List<ImageModelBean> list) {
+
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+  ```
 
 ## Videos
 VideoModel.java 视频列表、点赞和详情接口
