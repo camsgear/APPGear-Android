@@ -545,9 +545,9 @@ UploadImagesToServerModel.java 发布、更新图片接口
 - 4.在服务器上创建或更新图片
 
 ### 接口列表
-- [isImagesBelongToMe](#isImagesBelongToMe)
-- [createImages](#createImages)
-- [updateImages](#updateImages)
+- [isImagesBelongToMe](#isimagesbelongtome)
+- [createImages](#createimages)
+- [updateImages](#updateimages)
   
 #### isImagesBelongToMe
 ##### 描述:
