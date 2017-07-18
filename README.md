@@ -100,7 +100,7 @@ public void loadData(Context context, int limit, int orderBy, String id, final I
 - `limit` - 请求的数据个数
 - `orderBy` - 可取值为`MyVideoUtil.DESC(根据时间倒序排序)、 MyVideoUtil.ASC（根据时间顺序排序）`
 - `id` - 加载的参考值，获取比该id号更旧的数据
-- `videoListCallback` - 回调接口，访问服务器成功调用`onSuccess(List<ImageModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
+- `mImageListCallback` - 回调接口，访问服务器成功调用`onSuccess(List<ImageModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
 ##### 使用示例：
   ```java
   ImageModel.getInstance().loadData(this,limit, MyVideoUtil.ALL, "id", new ImageModel.ImageListCallback() {
