@@ -26,6 +26,7 @@ dependencies {
 - [视频](#videos)
 - [直播](#live)
 - [用户](#user)
+- [发布图片](#uploadimage)
 - [发布视频](#uploadvideo)
 - [错误信息](#error)
 
@@ -535,6 +536,72 @@ UserManager.java 获取登录状态、创建匿名用户接口
         });
     }  
   ```
+## UploadImage
+UploadImagesToServerModel.java 发布、更新图片接口
+### 发布流程（示例代码中有执行流程）
+- 1.获取临时凭证
+- 2.判断图片是否已经发布过
+- 3.上传图片、封面
+- 4.在服务器上创建或更新图片
+
+### 接口列表
+- [isImagesBelongToMe](#isImagesBelongToMe)
+- [createImages](#createImages)
+- [updateImages](#updateImages)
+  
+#### isImagesBelongToMe
+##### 描述:
+判断图片是否上传过。
+##### 函数定义:
+```java
+ public void isImagesBelongToMe(Retrofit retrofit, String originId ,final IsBelongToMeCallback mIsBelongToMeCallback)
+```
+##### 参数说明：
+- `retrofit` - 访问网络
+- `originId` - 图片的ID
+- `mIsBelongToMeCallback` - 回调接口
+##### 使用示例：
+  ```java
+private void isBelongToMe(String id){
+        //获取视频是否存在
+        UploadImagesToServerModel.getInstance().isImagesBelongToMe(Utils.getServerAccessRetrofit(this), id, new UploadImagesToServerModel.IsBelongToMeCallback() {
+            @Override
+            public void onSuccess(boolean b) {
+                
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+    }
+  ```
+#### createImages
+##### 描述:
+创建图片。
+##### 函数定义:
+```java
+  public void createImages(Retrofit retrofit, UploadImageBean body, final UploadImageCallback mUploadImageCallback)
+```
+##### 参数说明：
+- `retrofit` - 访问网络
+- `body` - 图片的信息
+- `mUploadImageCallback` - 回调接口
+  
+#### updateImages
+##### 描述:
+更新图片。
+##### 函数定义:
+```java
+ public void updateImages(Retrofit retrofit, String originId, UploadImageBean body, final UploadImageCallback mUploadImageCallback)
+```
+##### 参数说明：
+- `retrofit` - 访问网络
+- `originId` - 图片的ID
+- `body` - 图片的信息
+- `mUploadImageCallback` - 回调接口  
+
 ## UploadVideo
 UploadToServerModel.java 发布、更新视频接口
 ### 发布流程（示例代码中有执行流程）
