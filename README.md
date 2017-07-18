@@ -96,7 +96,6 @@ public void refreshData(Context context, int orderBy, String id, final ImageMode
 public void loadData(Context context, int limit, int orderBy, String id, final ImageListCallback mImageListCallback)
 ```
 ##### 参数说明：
-- `myVideo` - 可取值为`MyVideoUtil.ALL(获取视频数据)、 MyVideoUtil.MY_PUBLISH（获取自己发布的数据）、 MyVideoUtil.MY_COLLECTION（获取自己收藏的数据）`
 - `context` - 上下文变量
 - `limit` - 请求的数据个数
 - `orderBy` - 可取值为`MyVideoUtil.DESC(根据时间倒序排序)、 MyVideoUtil.ASC（根据时间顺序排序）`
