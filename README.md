@@ -391,7 +391,13 @@ LoginAndRegisterModel.java 登录、获取验证码接口
   LoginAndRegisterModel.getInstance().loginOrRegister(this, name, phone, verifyingCodes, new LoginAndRegisterModel.LoginCallback() {
             @Override
             public void onSuccess(UserBean userBean) {
-                
+                //登陆成功后更新一下本地登录状态
+                String rongYunToken = "";
+                if(user.getChatServer() != null){
+                    rongYunToken = user.getChatServer().getToken();
+                }
+                UserManager.getInstance().updateUser(context, user.getToken(),
+                        rongYunToken,UserManager.ROLE_USER, user.getId());
             }
 
             @Override
@@ -526,7 +532,13 @@ UserManager.java 获取登录状态、创建匿名用户接口
         LoginAndRegisterModel.getInstance().wechatLogin(this, mWechatLoginBean, new LoginAndRegisterModel.LoginCallback() {
             @Override
             public void onSuccess(UserBean userBean) {
-
+                //登陆成功后更新一下本地登录状态
+                String rongYunToken = "";
+                if(user.getChatServer() != null){
+                    rongYunToken = user.getChatServer().getToken();
+                }
+                UserManager.getInstance().updateUser(context, user.getToken(),
+                        rongYunToken,UserManager.ROLE_USER, user.getId());
             }
 
             @Override
