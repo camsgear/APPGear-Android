@@ -15,11 +15,25 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
 }
 ```
 * 3.在AndroidManifest.xml文件中增加权限：
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
+```
+* 4.是否打印Log
+** 建议在Application或者MainActivity的onCreate方法中设置，代码：
+```java
+// 开启后也会打印okhttp的Log,
+// 所以要在app文件夹下的build.gradle文件中增加 compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+LogUtil.setEnableDebug(true);
+```
+* 5.设置应用Key
+** 建议在Application或者MainActivity的onCreate方法中设置，代码：
+```java
+// 应用Key是从服务器获取数据时必需的标识，该Key可以在我们的后台http://admin.camdora.me申请。如有疑问可以联系我们
+Utils.setAppKey("WkTU9McNCYKduv80Ld6OQLsW");
 ```
 ## 功能分类
 - [图片](#image)
