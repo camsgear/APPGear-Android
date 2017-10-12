@@ -77,19 +77,22 @@ public void initData(Context context, int limit, int orderBy, final ImageListCal
   ```
 #### refreshImageData 
 ##### 描述:
-刷新图片列表信息，用于获取最新的数据，会返回所有比传入的id号更新的数据
+刷新图片列表信息，用于获取最新的数据。
+3.0的api对刷新操作做了修改，获取数据时已经不需要id了，使用limit限制获得数据个数。
+现在刷新会一直获取最新的数据，已经不是id之前的数据了，所以显示刷新数据时要把list清空，
+否则数据会重复。所以现在的初始化操作就可以使用刷新代替了，initData和refreshData功能一样了
 ##### 函数定义:
 ```java
-public void refreshData(Context context, int orderBy, String id, final ImageModel.ImageListCallback mImageListCallback)
+public void refreshData(Context context, int orderBy, int limit, final ImageModel.ImageListCallback mImageListCallback)
 ```
 ##### 参数说明：
 - `context` - 上下文变量
 - `orderBy` - 可取值为`MyVideoUtil.DESC(根据时间倒序排序)、 MyVideoUtil.ASC（根据时间顺序排序）`
-- `id` - 刷新的参考值，获取所有比该id号更新的数据
+- `limit` - 请求的数据个数
 - `mImageListCallback` - 回调接口，访问服务器成功调用`onSuccess(List<ImageModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
 ##### 使用示例：
   ```java
-  ImageModel.getInstance().refreshData(this, MyVideoUtil.ALL, "id", new ImageModel.ImageListCallback() {
+  ImageModel.getInstance().refreshData(this, MyVideoUtil.DESC, 30, new ImageModel.ImageListCallback() {
             @Override
             public void onSuccess(List<ImageModelBean> list) {
 
@@ -169,20 +172,26 @@ public void initData(int myVideo, Context context, int limit, int orderBy, final
   ```
 #### refreshData 
 ##### 描述:
-刷新视频列表信息，用于获取最新的数据，会返回所有比传入的id号更新的数据
+刷新视频列表信息，用于获取最新的数据。
+3.0的api对刷新操作做了修改，获取数据时id可以为空，使用limit限制获得数据个数。
+现在刷新会一直获取最新的数据，已经不是id之前的数据了，所以显示刷新数据时要把list清空，
+否则数据会重复。所以现在的初始化操作就可以使用刷新代替了，initData和refreshData功能一样了。
+这里保留id字段是因为获取个人收藏、发布等数据时，获取的是id之前的最新数据。
+获取所有数据时（MyVideoUtil.ALL），id可以传空值。
 ##### 函数定义:
 ```java
-public void refreshData(int myVideo, Context context, int orderBy, String id,final VideoListCallback videoListCallback)
+public void refreshData(int myVideo, Context context, int orderBy, String id, int limit, final VideoListCallback videoListCallback)
 ```
 ##### 参数说明：
 - `myVideo` - 可取值为`MyVideoUtil.ALL(获取视频数据)、 MyVideoUtil.MY_PUBLISH（获取自己发布的数据）、 MyVideoUtil.MY_COLLECTION（获取自己收藏的数据）`
 - `context` - 上下文变量
 - `orderBy` - 可取值为`MyVideoUtil.DESC(根据时间倒序排序)、 MyVideoUtil.ASC（根据时间顺序排序）`
 - `id` - 刷新的参考值，获取所有比该id号更新的数据
+- `limit` - 请求的数据个数
 - `videoListCallback` - 回调接口，访问服务器成功调用`onSuccess(List<VideoModelBean> mData)`,mData是返回的数据，访问服务器失败调用`onFailure(int code)`，code表示失败的信息，详情请参考`ErrorUtil.java`
 ##### 使用示例：
   ```java
-  VideoModel.getInstance().refreshData(MyVideoUtil.ALL, this, MyVideoUtil.DESC,id,
+  VideoModel.getInstance().refreshData(MyVideoUtil.ALL, this, MyVideoUtil.DESC,id,limit,
                 new VideoModel.VideoListCallback() {
                     @Override
                     public void onSuccess(List<VideoModelBean> list) {
