@@ -1,7 +1,9 @@
 package com.camsgear.sdktest;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,15 +14,24 @@ import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.camsgear.camsgearlibrary.UserManager;
+import com.camsgear.camsgearlibrary.image.model.ImageModel;
+import com.camsgear.camsgearlibrary.image.model.ImageModelBean;
 import com.camsgear.camsgearlibrary.personal.model.OssSTSBean;
+import com.camsgear.camsgearlibrary.personal.model.UploadImagesToServerModel;
 import com.camsgear.camsgearlibrary.personal.model.UploadToServerModel;
 import com.camsgear.camsgearlibrary.personal.model.UploadVideoBean;
+
+
+import com.camsgear.camsgearlibrary.utils.LogUtil;
+import com.camsgear.camsgearlibrary.utils.MyVideoUtil;
+import com.camsgear.camsgearlibrary.utils.StringUtil;
 import com.camsgear.camsgearlibrary.utils.Utils;
 import com.camsgear.camsgearlibrary.video.model.VideoModel;
 import com.camsgear.camsgearlibrary.video.model.VideoModelBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener{
@@ -48,10 +59,18 @@ public class MainActivity extends AppCompatActivity
         button2 = (Button) findViewById(R.id.button_2);
         button3 = (Button) findViewById(R.id.button_3);
         button4 = (Button) findViewById(R.id.button_4);
+
         button1.setOnClickListener(this);
         button2.setOnClickListener(this);
         button3.setOnClickListener(this);
         button4.setOnClickListener(this);
+        //设置App标识
+        Utils.setAppKey("WkTU9McNCYKduv80Ld6OQLsW");
+        //+++++开启log，开启后也会打印okhttp的Log，//
+        // 所以要在app文件夹下的build.gradle文件中增加 compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+        LogUtil.setEnableDebug(true);
+        //-----
+
     }
 
     public void showToast(String s){
@@ -60,11 +79,11 @@ public class MainActivity extends AppCompatActivity
 
     private void initData(){
         /**
-         * Utils.ALL 表示请求视频数据，Utils.MY_PUBLISH = 1; 表示请求自己发布的数据 Utils.MY_COLLECTION = 2;表示自己收藏的数据
+         * MyVideoUtil.ALL 表示请求视频数据，MyVideoUtil.MY_PUBLISH = 1; 表示请求自己发布的数据 MyVideoUtil.MY_COLLECTION = 2;表示自己收藏的数据
          * limit 表示请求的数据个数
-         * Utils.DESC 表示根据时间倒序排序 Utils.ASC 表示顺序排序
+         * MyVideoUtil.DESC 表示根据时间倒序排序 MyVideoUtil.ASC 表示顺序排序
          */
-        VideoModel.getInstance().initData(Utils.ALL, this, limit, Utils.DESC,
+        VideoModel.getInstance().initData(MyVideoUtil.ALL, this, limit, MyVideoUtil.DESC,
                 new VideoModel.VideoListCallback() {
                     @Override
                     public void onSuccess(List<VideoModelBean> list) {
@@ -78,17 +97,26 @@ public class MainActivity extends AppCompatActivity
 
                     }
                 });
+
     }
 
     private void refreshData(String id){
         /**
-         * 刷新操作表示， 请求 id 之前的所有数据
+         * 刷新操作表示， 请求 id 之前的所有数据（已修改）
+         * 3.0的api对刷新操作做了修改，获取数据时id可以为空，使用limit限制获得数据个数。
+         * 现在刷新会一直获取最新的数据，已经不是id之前的数据了，所以显示刷新数据时要把list清空，
+         * 否则数据会重复。所以现在的初始化操作就可以使用刷新代替了，initData和refreshData功能一样了。
+         * 这里保留id字段是因为获取个人收藏、发布等数据时，获取的是id之前的最新数据。
+         * 获取所有数据时（MyVideoUtil.ALL），id可以传空值。
          */
-        VideoModel.getInstance().refreshData(Utils.ALL, this, Utils.DESC,id,
+        VideoModel.getInstance().refreshData(MyVideoUtil.ALL, this, MyVideoUtil.DESC,id,limit,
                 new VideoModel.VideoListCallback() {
                     @Override
                     public void onSuccess(List<VideoModelBean> list) {
                         showToast("刷新了"+list.size()+"条数据");
+                        Log.d(TAG, "onSuccess: " + list.get(0));
+                        //现在显示刷新数据要把原来的清空
+                        mVideoList.clear();
                     }
 
                     @Override
@@ -102,7 +130,7 @@ public class MainActivity extends AppCompatActivity
         /**
          * 加载操作表示，请求 id 之后的 limit 条数据
          */
-        VideoModel.getInstance().loadData(Utils.ALL, this, limit, Utils.DESC, id, new VideoModel.VideoListCallback() {
+        VideoModel.getInstance().loadData(MyVideoUtil.ALL, this, limit, MyVideoUtil.DESC, id, new VideoModel.VideoListCallback() {
             @Override
             public void onSuccess(List<VideoModelBean> list) {
                 showToast("加载了"+list.size()+"条数据");
@@ -123,7 +151,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onSuccess(OssSTSBean ossSTSBean) {
                 mOssSTSBean = ossSTSBean;
-                String id = "";//视频的ID
+                String id = UUID.randomUUID().toString();//视频的ID
                 isBelongToMe(id);
             }
 
@@ -137,7 +165,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * 判断视频是否上传过，已经存在了
      */
-    private void isBelongToMe(String id){
+    private void isBelongToMe(final String id){
         //获取视频是否存在
         UploadToServerModel.getInstance().isBelongToMe(this, id, new UploadToServerModel.IsBelongToMeCallback() {
             @Override
@@ -147,7 +175,7 @@ public class MainActivity extends AppCompatActivity
 
                 }else {
                     //视频不存在，执行创建操作
-                    uploadVideo();//上传视频
+                    uploadVideo(id);//上传视频
                 }
             }
 
@@ -158,8 +186,10 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    void uploadVideo(){
-        UploadToServerModel.getInstance().uploadVideo(this, mOssSTSBean, "", "", new UploadToServerModel.UploadTaskCallback() {
+    void uploadVideo(final String id){
+        String folderName = this.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        String videoPath = folderName + "/20180319184645_F.mkv";
+        UploadToServerModel.getInstance().uploadVideo(this, mOssSTSBean, id + ".mkv", videoPath, new UploadToServerModel.UploadTaskCallback() {
             @Override
             public void onProgress(PutObjectRequest putObjectRequest, long l, long l1) {
                 Log.i(TAG,l+" "+l1);
@@ -167,7 +197,16 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                UploadVideoBean body = null;
+                UploadVideoBean body = new UploadVideoBean();
+                body.setOriginId(id);
+                body.setTitle("testMKVTitle");
+                UploadVideoBean.CamdoraMediaInfoBean mediaInfoBean = new UploadVideoBean.CamdoraMediaInfoBean(1, 1080, 2160, 210, 0, 0, 1, 1, false);
+                body.setCamdoraMediaInfo(mediaInfoBean);
+                body.setPublished(true);
+                body.setOrigin(new UploadVideoBean.OriginBean("videos/" + id + ".mp4"));
+                body.setVideoType(StringUtil.getVideoType(StringUtil.VIDEO_TYPE_PANORAMA));
+                UploadVideoBean.MetadataBean metadataBean = new UploadVideoBean.MetadataBean(720, 1280, 3, 300);
+                body.setMetadata(metadataBean);
                 createVideo(body);
             }
 
@@ -182,6 +221,20 @@ public class MainActivity extends AppCompatActivity
         UploadToServerModel.getInstance().createVideos(this, body, new UploadToServerModel.UploadVideoCallback() {
             @Override
             public void onSuccess(VideoModelBean videoModelBean) {
+                Log.d(TAG, "==============");
+                Log.d(TAG, "onSuccess: " + videoModelBean);
+            }
+
+            @Override
+            public void onFailure(int i) {
+
+            }
+        });
+
+        //----------
+        UploadImagesToServerModel.getInstance().isImagesBelongToMe(Utils.getServerAccessRetrofit(this), "id", new UploadImagesToServerModel.IsBelongToMeCallback() {
+            @Override
+            public void onSuccess(boolean b) {
 
             }
 
@@ -195,6 +248,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
         String id;
+        Intent intent;
         switch (view.getId()) {
             case R.id.button_1:
                 initData();
