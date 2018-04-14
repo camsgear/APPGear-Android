@@ -1,3 +1,4 @@
+
 ## 配置
 * 1.把aar文件复制到libs文件夹下，名字可以修改，默认名字是：camsgearlibrary-release.aar
 * 2.在app 的gradle文件中增加引用：
@@ -521,7 +522,7 @@ UserManager.java 获取登录状态、创建匿名用户接口
   mShareAPI = UMShareAPI.get(this);
   mShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, umAuthListener);
 
-  //返回授权信息
+  //返回授权信息
   private UMAuthListener umAuthListener = new UMAuthListener() {
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
@@ -532,8 +533,8 @@ UserManager.java 获取登录状态、创建匿名用户接口
                         data.get("gender"), data.get("screen_name"),data.get("openid"),
                         data.get("language"),data.get("profile_image_url"),
                         data.get("country"),data.get("city"),data.get("province"));
-                //微信授权后登录
-                wechatLogin(bean);
+                //微信授权后登录
+                wechatLogin(bean);
             }
             showToast(getString(R.string.authorize_succeed));
         }
@@ -737,8 +738,19 @@ private void isBelongToMe(String id){
 
             @Override
             public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                UploadVideoBean body = null;
-                createVideo(body);
+                UploadVideoBean  body = new UploadVideoBean();  
+        body.setOriginId(id);  
+        body.setTitle("testMKVTitle");  
+        //MediaInfo 按照如下格式填写
+        UploadVideoBean.CamdoraMediaInfoBean mediaInfoBean = new UploadVideoBean.CamdoraMediaInfoBean(1, 1080, 2160, 210, 0, 0, 1, 1, false);  
+        body.setCamdoraMediaInfo(mediaInfoBean);  
+        body.setPublished(true);  
+        body.setOrigin(new UploadVideoBean.OriginBean("videos/" + id + ".mp4"));  
+        body.setVideoType(StringUtil.getVideoType(StringUtil.VIDEO_TYPE_PANORAMA));  
+        //MetaData按照真实视频的长宽以及长度和大小填写
+        UploadVideoBean.MetadataBean metadataBean = new UploadVideoBean.MetadataBean(720, 1280, 3, 300);  
+        body.setMetadata(metadataBean);  
+        createVideo(body);
             }
 
             @Override
@@ -780,7 +792,7 @@ void createVideo(UploadVideoBean body){
         UploadToServerModel.getInstance().createVideos(this, body, new UploadToServerModel.UploadVideoCallback() {
             @Override
             public void onSuccess(VideoModelBean videoModelBean) {
-
+        //上传的视频地址在：videoModelBean.origin.oss
             }
 
             @Override
@@ -810,17 +822,17 @@ ErrorUtil.java 错误信息接口
 ```java
     public final static int ACCESS_NETWORK_ERROR = -1;//访问网络出错。
     public final static int DATA_ERROR = -2;//返回的数据有问题，或许解析json出错
-    public final static int BAD_REQUEST = 400;//错误的请求	该请求是无效的。相应的描述信息会说明原因。
-    public final static int NOT_AUTHENTICATED = 401;//未验证	没有验证信息或者验证失败。
-    public final static int FORBIDDEN = 403;//被拒绝	理解该请求，但不被接受。相应的描述信息会说明原因。
-    public final static int NOT_FOUND = 404;//无法找到	资源不存在，请求的用户的不存在，请求的格式不被支持。
-    public final static int METHOD_NOT_ALLOWED = 405;//请求方法不合适	该接口不支持该方法的请求。
+    public final static int BAD_REQUEST = 400;//错误的请求 该请求是无效的。相应的描述信息会说明原因。
+    public final static int NOT_AUTHENTICATED = 401;//未验证 没有验证信息或者验证失败。
+    public final static int FORBIDDEN = 403;//被拒绝 理解该请求，但不被接受。相应的描述信息会说明原因。
+    public final static int NOT_FOUND = 404;//无法找到  资源不存在，请求的用户的不存在，请求的格式不被支持。
+    public final static int METHOD_NOT_ALLOWED = 405;//请求方法不合适  该接口不支持该方法的请求。
     public final static int ACCOUNT_HAS_BEEN_BOUND = 409;//该账号已绑定其他用户，请先解绑
     public final static int ONLY_HAVE_ONE_CAN_LOGIN_ACCOUNT = 422;//您只有一个可登陆账号，不能再解绑
-    public final static int TOO_MANY_REQUESTS = 429;//过多的请求	请求超出了频率限制。相应的描述信息会解释具体的原因。
-    public final static int GENERAL_ERROR = 500;//内部服务错误	服务器内部出错了。请联系我们尽快解决问题。
-    public final static int BAD_GATEWAY = 502;//无效代理	业务服务器下线了或者正在升级。请稍后重试。
-    public final static int UNAVAILABLE = 503;//服务暂时失效	服务器无法响应请求。请稍后重试。
+    public final static int TOO_MANY_REQUESTS = 429;//过多的请求 请求超出了频率限制。相应的描述信息会解释具体的原因。
+    public final static int GENERAL_ERROR = 500;//内部服务错误  服务器内部出错了。请联系我们尽快解决问题。
+    public final static int BAD_GATEWAY = 502;//无效代理  业务服务器下线了或者正在升级。请稍后重试。
+    public final static int UNAVAILABLE = 503;//服务暂时失效  服务器无法响应请求。请稍后重试。
 ```
 ##### 显示错误信息示例：
 ```java
